@@ -9,6 +9,8 @@
 !omarchy/
 !omarchy/**
 !omarchy.ttf
+!hypr/
+!hypr/**
 !waybar/
 !waybar/**
 !zed/
