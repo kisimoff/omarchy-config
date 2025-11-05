@@ -1,0 +1,16 @@
+*
+!.gitignore
+!alacritty/
+!alacritty/**
+!btop/
+!btop/**
+!easyeffects/
+!easyeffects/**
+!omarchy/
+!omarchy/**
+!omarchy.ttf
+!waybar/
+!waybar/**
+!zed/
+!zed/**
+!brave-flags.conf

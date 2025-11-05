@@ -1,0 +1,24 @@
+{
+    "active_pane_modifiers": {
+        "inactive_opacity": 0.8
+    },
+
+    "use_system_window_tabs": false,
+    "tab_bar": {
+        "show": true
+    },
+    "project_panel": {
+        "button": true,
+        "dock": "left"
+    },
+    "ui_font_size": 16,
+    "buffer_font_size": 15,
+    "theme": {
+        "mode": "system",
+        "light": "Gruvbox Light",
+        "dark": "Gruvbox Dark Hard"
+    },
+    "tabs": { "file_icons": true },
+    "current_line_highlight": "none",
+    "tab_size": 4
+}
