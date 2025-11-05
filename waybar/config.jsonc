@@ -8,6 +8,8 @@
   "modules-center": ["clock", "custom/update", "custom/screenrecording-indicator"],
   "modules-right": [
     "group/tray-expander",
+    "custom/colorpicker",
+    "custom/notes",
     "bluetooth",
     "network",
     "pulseaudio",
@@ -59,7 +61,7 @@
     "on-click": "$TERMINAL -e btop"
   },
   "clock": {
-    "format": "{:L%A %H:%M}",
+    "format": "{:L%m.%d %A %H:%M}",
     "format-alt": "{:L%d %B W%V %Y}",
     "tooltip": false,
     "on-click-right": "omarchy-launch-floating-terminal-with-presentation omarchy-tz-select"
@@ -135,5 +137,15 @@
   "tray": {
     "icon-size": 12,
     "spacing": 17
+  },
+  "custom/notes": {
+    "format": "󰌌",
+    "tooltip": true,
+    "tooltip-format": "Keybinds\n\nSuper+Shift+P  Color picker\nSuper+Shift+S  Screenshot\nSuper+Shift+C  Clipboard picker\nSuper+Shift+E  Symbols picker\nSuper+Shift+M  Spotify\nSuper+Shift+T  btop"
+  },
+  "custom/colorpicker": {
+    "format": "󰈋",
+    "on-click": "pkill hyprpicker || hyprpicker -a",
+    "tooltip-format": "Color picker\n\nSuper + Shift + P"
   }
 }
