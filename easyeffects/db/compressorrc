@@ -1,0 +1,11 @@
+[soe][Compressor#0]
+attack=5
+bypass=true
+hpfFrequency=20
+hpfMode=2
+lpfFrequency=120
+lpfMode=2
+outputGain=0.4
+ratio=4.7
+sidechainMode=1
+threshold=-21.00000000000003

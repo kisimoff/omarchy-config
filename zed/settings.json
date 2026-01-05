@@ -1,4 +1,35 @@
 {
+  "terminal": {
+    "minimum_contrast": 41.0
+  },
+  "lsp_document_colors": "inlay",
+  "indent_guides": {
+    "background_coloring": "disabled"
+  },
+  "git": {
+    "inline_blame": {
+      "enabled": false
+    }
+  },
+  "icon_theme": "Catppuccin Frappé",
+  "agent": {
+    "always_allow_tool_actions": true,
+    "play_sound_when_agent_done": true,
+    "default_model": {
+      "provider": "openrouter",
+      "model": "minimax/minimax-m2:free"
+    },
+    "model_parameters": []
+  },
+  "context_servers": {
+    "mcp-server-brave-search": {
+      "source": "extension",
+      "enabled": true,
+      "settings": {
+        "brave_api_key": "BSAAWy9GAeARG9IYkGVSoK42BLF99rx"
+      }
+    }
+  },
   "show_completion_documentation": false,
   "show_completions_on_input": false,
   "active_pane_modifiers": {
