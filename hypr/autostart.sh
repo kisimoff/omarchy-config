@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# Note: This file is currently disabled in favor of startup.sh
+# To re-enable, add 'exec-once = ~/.config/hypr/autostart.sh' to hyprland.conf
+
 # spawn_to_ws <ws> <regex_for_class_or_appid> -- <command...>
 spawn_to_ws() {
   local WS="$1"; shift
@@ -32,30 +35,20 @@ spawn_to_ws() {
   done
 }
 
-# --- Your session layout ---
+# --- Legacy session layout ---
 
 # WS 1: Brave
 spawn_to_ws 1 'Brave|brave' -- brave --new-window about:blank
 sleep 0.1
 
-# WS 2: VS Code (fresh window + isolated profile to avoid instance reuse)
-# If Flatpak: replace 'code' with 'flatpak run com.visualstudio.code'
-spawn_to_ws 2 'code|Code|codium|VSCodium|code-oss|com\.visualstudio\.code' -- \
-  env ELECTRON_OZONE_PLATFORM_HINT=wayland \
-  code -n --user-data-dir="$HOME/.cache/omarchy/code-ws2"
-sleep 0.1
-
-# WS 6: Alacritty x2 (fastfetch + btop)
-spawn_to_ws 6 'Alacritty' -- alacritty -t fastfetch -e fastfetch
-sleep 0.05
+# WS 6: Alacritty x2 (fastfetch + btop) + Spotify
 spawn_to_ws 6 'Alacritty' -- alacritty -t btop -e btop
+sleep 0.05
+spawn_to_ws 6 'Spotify|com\.spotify\.Client' -- spotify
 sleep 0.1
 
-# WS 7: Spotify + EasyEffects (swap to Flatpak IDs if applicable)
-spawn_to_ws 7 'Spotify|com\.spotify\.Client' -- spotify
-sleep 0.1
-spawn_to_ws 7 'EasyEffects|com\.github\.wwmm\.easyeffects' -- easyeffects
-sleep 0.1
+# EasyEffects (Service Mode)
+easyeffects --service-mode &
 
-# WS 8: Brave (second window)
-spawn_to_ws 8 'Brave|brave' -- brave --new-window about:blank
+# WS 7: Brave (second window)
+spawn_to_ws 7 'Brave|brave' -- brave --new-window about:blank

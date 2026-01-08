@@ -93,62 +93,69 @@ spawn_to_ws() {
 
 # WS 1: Brave
 if ! pgrep -f 'brave .*--new-window about:blank' >/dev/null 2>&1; then
-  # WS 1: Brave (general profile, rule-free to keep ad-hoc windows flexible)
   spawn_to_ws 1 'Brave|brave' -- brave --new-window about:blank
-  sleep 0.02
 fi
 
-# WS 2: VS Code (fresh window + isolated profile to avoid instance reuse)
-# If Flatpak: replace 'code' with 'flatpak run com.visualstudio.code'
-if ! pgrep -f 'code .*--user-data-dir=/home/vincent/.cache/omarchy/code-ws2' >/dev/null 2>&1; then
-  spawn_to_ws 2 'code|Code|codium|VSCodium|code-oss|com\.visualstudio\.code' -- \
-    env ELECTRON_OZONE_PLATFORM_HINT=wayland \
-    code -n --user-data-dir="$HOME/.cache/omarchy/code-ws2"
-  sleep 0.02
+# WS 2: Antigravity (Development)
+# Replaced VSCode with Antigravity
+if ! pgrep -f 'antigravity' >/dev/null 2>&1; then
+  log "Spawning Antigravity to WS 2"
+  spawn_to_ws 2 'antigravity' -- antigravity
 fi
 
-# WS 5: PWAs (Messenger, WhatsApp, Instagram)
-if ! pgrep -f '--app=https://www.facebook.com/messages/e2ee/t/9709072432525309' >/dev/null 2>&1; then
-  spawn_to_ws 5 'Brave|brave' -- \
-    omarchy-launch-webapp https://www.facebook.com/messages/e2ee/t/9709072432525309
-  sleep 0.02
-fi
-if ! pgrep -f '--app=https://web.whatsapp.com/' >/dev/null 2>&1; then
-  spawn_to_ws 5 'Brave|brave' -- \
-    omarchy-launch-webapp https://web.whatsapp.com/
-  sleep 0.02
-fi
-if ! pgrep -f '--app=https://www.instagram.com/direct/inbox/' >/dev/null 2>&1; then
-  spawn_to_ws 5 'Brave|brave' -- \
-    omarchy-launch-webapp https://www.instagram.com/direct/inbox/
-  sleep 0.02
+# WS 9: Messaging (Messenger, WhatsApp, Instagram, Discord)
+# Check for native discord first, otherwise use webapp
+if ! pgrep -x "discord" >/dev/null 2>&1; then
+    if command -v discord >/dev/null 2>&1; then
+        log "Spawning native Discord to WS 9"
+        spawn_to_ws 9 'discord' -- discord
+    fi
 fi
 
-# WS 6: Alacritty x2 (fastfetch + btop)
-spawn_to_ws 6 'WS6-fastfetch' -- \
-  alacritty -t WS6-fastfetch -e bash -lc 'fastfetch; exec bash'
-sleep 0.02
-spawn_to_ws 6 'WS6-btop' -- \
-  alacritty -t WS6-btop -e bash -lc 'btop'
-sleep 0.02
+MESSAGING_URLS=(
+  "https://www.facebook.com/messages/e2ee/t/9709072432525309"
+  "https://web.whatsapp.com/"
+  "https://www.instagram.com/direct/inbox/"
+)
 
-# WS 7: Spotify + EasyEffects (swap to Flatpak IDs if applicable)
-spawn_to_ws 7 'Spotify|com\.spotify\.Client' -- spotify
-sleep 0.02
-spawn_to_ws 7 'EasyEffects|com\.github\.wwmm\.easyeffects' -- easyeffects
-sleep 0.02
+# Only launch webapp Discord if native isn't running
+if ! pgrep -f "discord" >/dev/null 2>&1; then
+    MESSAGING_URLS+=("https://discord.com/channels/@me")
+fi
 
-# WS 8: Brave (manual)
-spawn_to_ws 8 'Brave|brave' -- \
-  brave --new-window "http://localhost:3000"
+for url in "${MESSAGING_URLS[@]}"; do
+  if ! pgrep -f "--app=$url" >/dev/null 2>&1; then
+    log "Spawning webapp $url to WS 9"
+    spawn_to_ws 9 'Brave|brave' -- omarchy-launch-webapp "$url"
+    sleep 0.1
+  fi
+done
 
-# Ensure monitor workspaces settle: HDMI-A-1 on ws6, DP-1 on ws1
+# WS 6: System Utilities & Music
+if ! pgrep -f 'WS6-btop' >/dev/null 2>&1; then
+    spawn_to_ws 6 'WS6-btop' -- alacritty -t WS6-btop -e bash -lc 'btop'
+fi
+
+if ! pgrep -x "spotify" >/dev/null 2>&1; then
+    spawn_to_ws 6 'Spotify|com\.spotify\.Client' -- spotify
+fi
+
+# EasyEffects (Service Mode - No GUI)
+if ! pgrep -x "easyeffects" >/dev/null 2>&1; then
+  easyeffects --service-mode &
+fi
+
+# WS 7: Localhost Dev
+if ! pgrep -f "localhost:3000" >/dev/null 2>&1; then
+    spawn_to_ws 7 'Brave|brave' -- brave --new-window "http://localhost:3000"
+fi
+
+# Final Cleanup: Settle monitors
+log "Settling monitors and workspaces..."
 hyprctl dispatch focusmonitor HDMI-A-1 >/dev/null 2>&1 || true
-hyprctl dispatch workspace 8 >/dev/null 2>&1 || true
-sleep 0.02
-hyprctl dispatch splitratio 0.66 >/dev/null 2>&1 || true
-hyprctl dispatch workspace 6 >/dev/null 2>&1 || true
+hyprctl dispatch workspace 9 >/dev/null 2>&1 || true # Focus messaging
+sleep 0.1
 hyprctl dispatch focusmonitor DP-1 >/dev/null 2>&1 || true
-hyprctl dispatch workspace 1 >/dev/null 2>&1 || true
+hyprctl dispatch workspace 1 >/dev/null 2>&1 || true # Focus main browser
 
 log "startup complete"

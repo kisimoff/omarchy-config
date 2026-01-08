@@ -1,15 +1,23 @@
+[Presets]
+lastLoadedOutputPreset=start
+
+[Spectrum]
+height=200
+maximumFrequency=1000
+spectrumFpsCap=120
+
 [StreamInputs]
 inputDevice=alsa_input.usb-Anker_PowerConf_C200_Anker_PowerConf_C200_ACNV9P0D11559764-02.analog-stereo
 
 [StreamOutputs]
-mostUsedPresets=easy-effects-preset
+mostUsedPresets=start,easy-effects-preset
 outputDevice=alsa_output.usb-SMSL_SMSL_USB_AUDIO-00.analog-stereo
 plugins=bass_enhancer#0,equalizer#0,bass_loudness#0,crystalizer#0,autogain#0,compressor#0,filter#0,gate#0,level_meter#0,stereo_tools#0
-usedPresets=easy-effects-preset:1
+usedPresets=easy-effects-preset:1,start:9
 visiblePage=pluginsPage
 visiblePlugin=equalizer#0
 
 [Window]
 height=1030
 lastLoadedOutputPreset=easy-effects-preset
-width=1261
+width=1673

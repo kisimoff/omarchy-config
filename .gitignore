@@ -16,3 +16,7 @@
 !zed/
 !zed/**
 !brave-flags.conf
+!autostart/
+!autostart/**
+!hyprwhspr/
+!hyprwhspr/**

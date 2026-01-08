@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=OpenRGB Autostart
+Comment=Set static amber color for ASUS Motherboard
+Exec=openrgb --device "ASUS TUF GAMING B650M-PLUS WIFI" --mode static --color 220A00
+Terminal=false
+X-GNOME-Autostart-enabled=true
